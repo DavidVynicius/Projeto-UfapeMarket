@@ -17,10 +17,7 @@ import br.edu.ufape.poo.UfapeMarket.negocio.basica.Venda;
 import br.edu.ufape.poo.UfapeMarket.negocio.cadastro.InterfaceCadastroAvaliacao;
 import br.edu.ufape.poo.UfapeMarket.negocio.cadastro.InterfaceCadastroCategoria;
 import br.edu.ufape.poo.UfapeMarket.negocio.cadastro.InterfaceCadastroChat;
-<<<<<<< HEAD
-=======
 import br.edu.ufape.poo.UfapeMarket.negocio.cadastro.InterfaceCadastroNotificacao;
->>>>>>> 6d75ba5da2f13e5334ac97a431c4a403fd2765c1
 import br.edu.ufape.poo.UfapeMarket.negocio.cadastro.InterfaceCadastroProduto;
 import br.edu.ufape.poo.UfapeMarket.negocio.cadastro.InterfaceCadastroUsuario;
 import br.edu.ufape.poo.UfapeMarket.negocio.cadastro.InterfaceCadastroVenda;
@@ -71,12 +68,6 @@ public class UfapeMarket implements InterfaceFachada {
 
     @Autowired
     private InterfaceCadastroNotificacao cadastroNotificacao;
-
-    @Autowired
-    private InterfaceCadastroProduto cadastroProduto;
-
-    @Autowired
-    private InterfaceCadastroVenda cadastroVenda;
 
 
     @Override

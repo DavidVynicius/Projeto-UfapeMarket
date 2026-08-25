@@ -23,13 +23,9 @@ public class Chat {
 	@JoinColumn(name = "comprador_id")
 	private Usuario comprador;
 	
-<<<<<<< HEAD
-	public Chat() {}
-=======
 	public Chat() {
 		
 	}
->>>>>>> 6d75ba5da2f13e5334ac97a431c4a403fd2765c1
 	
 	public Chat(long id, Produto produto, Usuario vendedor, Usuario comprador) {
 		super();

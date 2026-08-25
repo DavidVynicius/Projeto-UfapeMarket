@@ -18,13 +18,8 @@ public class Avaliacao {
 	@JoinColumn(name = "autor_id")
 	private Usuario autor;
 	
-<<<<<<< HEAD
-	public Avaliacao() {}
-=======
 	public Avaliacao() {
-		
 	}
->>>>>>> 6d75ba5da2f13e5334ac97a431c4a403fd2765c1
 	
 	public Avaliacao(int nota, String comentario, Usuario avaliado, Usuario autor) {
 		super();
