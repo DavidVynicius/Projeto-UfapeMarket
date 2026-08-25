@@ -30,7 +30,7 @@ public class Usuario {
     private List<Notificacao> notificacoes = new ArrayList<>();
     
     @ManyToMany
-    @JoinTable(name = "usuario/produto/favorito",
+    @JoinTable(name = "usuario_produto_favorito",
 	    		joinColumns = @JoinColumn(name = "usuario_id"),
 	            inverseJoinColumns = @JoinColumn(name = "produto_id"))
     private List<Produto> favoritos = new ArrayList<>();

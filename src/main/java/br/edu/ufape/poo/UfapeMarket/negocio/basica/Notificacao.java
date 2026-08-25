@@ -21,6 +21,8 @@ public class Notificacao {
 	@ManyToOne
 	private Usuario destinatario;
 	
+	public Notificacao() {}
+	
 	public Notificacao(long id, String titulo, String mensagem, LocalDateTime dataHora, 
 					boolean lida, Usuario destinatario) {
 		this.id = id;

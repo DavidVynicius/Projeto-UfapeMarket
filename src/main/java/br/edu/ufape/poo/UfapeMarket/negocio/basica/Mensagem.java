@@ -63,4 +63,13 @@ public class Mensagem {
 		this.remetente = remetente;
 	}
 	
+	public Chat getChat() {
+		return chat;
+	}
+	
+	public void setChat(Chat chat) {
+		this.chat = chat;
+	}
+	
+	
 }

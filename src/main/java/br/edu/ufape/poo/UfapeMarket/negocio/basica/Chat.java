@@ -22,6 +22,9 @@ public class Chat {
 	@ManyToOne
 	@JoinColumn(name = "comprador_id")
 	private Usuario comprador;
+	
+	public Chat() {}
+	
 	public Chat(long id, Produto produto, Usuario vendedor, Usuario comprador) {
 		super();
 		this.id = id;
