@@ -32,7 +32,7 @@ public class CadastroVenda implements InterfaceCadastroVenda {
             throw new VendaDataObrigatoriaException();
         }
 
-        if (venda.getProduto() == null || venda.getProduto().isEmpty()) {
+        if (venda.getProduto() == null) {
             throw new VendaProdutoObrigatorioException();
         }
 

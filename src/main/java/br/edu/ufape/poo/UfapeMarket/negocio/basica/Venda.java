@@ -20,23 +20,19 @@ public class Venda {
 	private LocalDate dataVenda;
 	private int quantidadeVendida;
 	
-	@ManyToMany
-    @JoinTable(
-        name = "venda_produto",
-        joinColumns = @JoinColumn(name = "venda_id"),
-        inverseJoinColumns = @JoinColumn(name = "produto_id")
-    )
-	private List<Produto> produto = new ArrayList<>();
-	
+	@ManyToOne
+	@JoinColumn(name = "produto_id")
+	private Produto produto;
+		
 	public Venda() {
 		
 	}
-	public Venda(long id, LocalDate dataVenda, int quantidadeVendida, List<Produto> produtos) {
+	public Venda(long id, LocalDate dataVenda, int quantidadeVendida,Produto produto) {
 		super();
 		this.id = id;
 		this.dataVenda = dataVenda;
 		this.quantidadeVendida = quantidadeVendida;
-		this.produto =  produtos;
+		this.produto =  produto;
 	}
 
 	public void alterarDataVenda(LocalDate dataVenda)
@@ -66,7 +62,7 @@ public class Venda {
 	        throw new VendaProdutoObrigatorioException();
 	    }
 
-	    this.produto.add(produto);
+	    this.produto = produto;
 	}
 	
 	public void realizarVenda(Produto produto, int quantidade)
@@ -107,11 +103,11 @@ public class Venda {
 		this.quantidadeVendida = quantidadeVendida;
 	}
 
-	public List<Produto> getProduto() {
+	public Produto getProduto() {
 		return produto;
 	}
 
-	public void setProduto(List<Produto> produto) {
+	public void setProduto(Produto produto) {
 		this.produto = produto;
 	}
 

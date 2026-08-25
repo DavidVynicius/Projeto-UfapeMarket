@@ -66,7 +66,8 @@ public class CadastroUsuario implements InterfaceCadastroUsuario {
 	}
 
 	@Override
-	public Optional<Usuario> procurarUsuarioID(Long id) {
+	public Optional<Usuario> procurarUsuarioID(Long id)
+			throws UsuarioNaoEncontradoException {
 		return Optional.of(repositorioUsuario.findById(id).orElseThrow(() -> new UsuarioNaoEncontradoException(id)));
 	}
 

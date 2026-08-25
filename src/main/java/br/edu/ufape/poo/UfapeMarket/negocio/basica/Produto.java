@@ -1,5 +1,6 @@
 package br.edu.ufape.poo.UfapeMarket.negocio.basica;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.edu.ufape.poo.UfapeMarket.negocio.excecoes.ProdutoPrecoInvalidoException;
@@ -33,8 +34,8 @@ public class Produto {
 	@JoinColumn(name = "vendedor_id")
 	private Usuario vendedor;
 		
-	@ManyToMany(mappedBy = "produto")
-    private List<Venda> vendas;
+	@OneToMany(mappedBy = "produto")
+    private List<Venda> vendas =  new ArrayList<>();
 
 	public Produto() {
 		

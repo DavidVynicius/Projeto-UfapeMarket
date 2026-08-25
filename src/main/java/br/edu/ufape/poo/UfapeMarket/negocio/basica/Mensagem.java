@@ -71,5 +71,8 @@ public class Mensagem {
 		this.chat = chat;
 	}
 	
+<<<<<<< HEAD
 	
+=======
+>>>>>>> 6d75ba5da2f13e5334ac97a431c4a403fd2765c1
 }
