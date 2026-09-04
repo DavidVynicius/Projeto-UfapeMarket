@@ -98,26 +98,21 @@ public class ProdutoController {
                    ProdutoPrecoInvalidoException,
                    ProdutoQuantidadeInvalidaException,
                    ProdutoCategoriaObrigatoriaException,
-                   UsuarioNaoEncontradoException 
-    {
+                   UsuarioNaoEncontradoException {
 
         Produto produto = fachada.procurarProdutoID(id);
-
-        Produto dadosAtualizados = conversor.paraEntidade(request);
 
         Categoria categoria = fachada.procurarCategoriaID(request.idCategoria());
         Usuario vendedor = fachada.procurarUsuarioID(request.idVendedor());
 
-        produto.setNome(dadosAtualizados.getNome());
-        produto.setDescricaoProduto(dadosAtualizados.getDescricaoProduto());
-        produto.setFotoProduto(dadosAtualizados.getFotoProduto());
-        produto.setPreco(dadosAtualizados.getPreco());
-        produto.setDisponivel(dadosAtualizados.isDisponivel());
-        produto.setQuantidadeDisponivel(dadosAtualizados.getQuantidadeDisponivel());
-        produto.setTurnoDisponibilidade(dadosAtualizados.getTurnoDisponibilidade());
-        produto.setFormasPagamento(dadosAtualizados.getFormasPagamento());
+        produto.alterarNome(request.nome());
+        produto.alterarDescricao(request.descricaoProduto());
+        produto.alterarPreco(request.preco());
+        produto.alterarCategoria(categoria);
 
-        produto.setCategoria(categoria);
+        produto.setFotoProduto(request.fotoProduto());
+        produto.setTurnoDisponibilidade(request.turnoDisponibilidade());
+        produto.setFormasPagamento(request.formasPagamento());
         produto.setVendedor(vendedor);
 
         Produto atualizado = fachada.salvarProduto(produto);
