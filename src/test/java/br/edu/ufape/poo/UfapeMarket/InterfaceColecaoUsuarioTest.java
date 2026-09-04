@@ -15,11 +15,25 @@ class InterfaceColecaoUsuarioTest {
 	private InterfaceRepositorioUsuario colecaoUsuario;
 	
 	@Test
-	void cadastrarTest() {
-		long qntusuario = colecaoUsuario.count();
-		Usuario u = new Usuario("Arthur", "arthurbr2030@gmail.com", "123", null, "BCC", null, null);
-		
-		colecaoUsuario.save(u);
-		long qntusuario2 = colecaoUsuario.count();
+	void salvarUsuarioTest() {
+	    long quantidadeAntes = colecaoUsuario.count();
+
+	    Usuario usuario = new Usuario(
+	            "Arthur",
+	            "arthurbr2030@gmail.com",
+	            "123",
+	            null,
+	            "BCC",
+	            null,
+	            null
+	    );
+
+	    Usuario salvo = colecaoUsuario.save(usuario);
+
+	    long quantidadeDepois = colecaoUsuario.count();
+
+	    assertNotNull(salvo);
+	    assertNotNull(salvo.getId());
+	    assertEquals(quantidadeAntes + 1, quantidadeDepois);
 	}
 }
