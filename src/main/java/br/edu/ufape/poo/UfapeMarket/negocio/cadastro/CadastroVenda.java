@@ -54,11 +54,15 @@ public class CadastroVenda implements InterfaceCadastroVenda {
     }
 
     @Override
-    public void deletarVendaId(Long id) {
+    public void deletarVendaId(Long id) throws ProdutoQuantidadeInvalidaException {
 
         Venda venda = repositorioVenda.findById(id)
                 .orElseThrow(() ->
                         new IllegalArgumentException("Venda não encontrada."));
+
+        if (venda.getProduto() != null) {
+            venda.getProduto().reporEstoque(venda.getQuantidadeVendida());
+        }
 
         repositorioVenda.delete(venda);
     }

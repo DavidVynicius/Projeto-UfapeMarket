@@ -19,5 +19,5 @@ public interface InterfaceCadastroVenda {
 
     Optional<Venda> procurarVendaID(Long id);
 
-    void deletarVendaId(Long id);
+    void deletarVendaId(Long id) throws ProdutoQuantidadeInvalidaException;
 }

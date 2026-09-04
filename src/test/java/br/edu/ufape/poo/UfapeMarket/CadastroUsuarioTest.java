@@ -1,5 +1,6 @@
 package br.edu.ufape.poo.UfapeMarket;
 
+import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDate;
@@ -19,6 +20,26 @@ class CadastroUsuarioTest {
 
     @Autowired
     private CadastroUsuario cadastroUsuario;
+    
+    @BeforeEach
+    void limparUsuariosDeTeste() {
+
+        Usuario usuarioDavid =
+                cadastroUsuario.localizarUsuarioEmail(
+                        "david_teste_12345@ufape.edu.br");
+
+        if (usuarioDavid != null) {
+            cadastroUsuario.deletarUsuarioId(usuarioDavid.getId());
+        }
+
+        Usuario usuarioDuplicado =
+                cadastroUsuario.localizarUsuarioEmail(
+                        "duplicado@ufape.edu.br");
+
+        if (usuarioDuplicado != null) {
+            cadastroUsuario.deletarUsuarioId(usuarioDuplicado.getId());
+        }
+    }
 
     @Test
     void cadastrarUsuarioTest() throws Exception {
