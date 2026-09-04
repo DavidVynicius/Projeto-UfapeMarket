@@ -94,10 +94,7 @@ public class Produto {
 	        throw new ProdutoQuantidadeInvalidaException();
 	    }
 
-	    this.quantidadeDisponivel =
-	            this.quantidadeDisponivel + quantidade;
-
-	    this.disponivel = true;
+	    this.quantidadeDisponivel += quantidade;
 	}
 	
 	public void alterarDisponibilidade(boolean disponivel) {

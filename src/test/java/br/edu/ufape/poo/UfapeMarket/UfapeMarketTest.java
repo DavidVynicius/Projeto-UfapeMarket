@@ -129,6 +129,44 @@ class UfapeMarketTest {
                 .orElseThrow();
 
         assertEquals(10, produtoAposExclusao.getQuantidadeDisponivel());
+        assertEquals(true, produtoAposExclusao.isDisponivel());
     }
     
+    @Test
+    void deletarVendaNaoDeveAlterarDisponibilidadeDoProduto() throws Exception {
+
+        Categoria categoria = new Categoria();
+        categoria.setNome("Categoria Disponibilidade");
+        categoria = repositorioCategoria.save(categoria);
+
+        Produto produto = new Produto();
+
+        produto.setNome("Produto Disponibilidade");
+        produto.setDescricaoProduto("Produto para teste de disponibilidade");
+        produto.setPreco(10.0);
+        produto.setQuantidadeDisponivel(10);
+        produto.setDisponivel(true);
+        produto.setCategoria(categoria);
+
+        produto = repositorioProduto.save(produto);
+
+        Venda venda = new Venda();
+        venda.setDataVenda(java.time.LocalDate.now());
+
+        fachada.fazerVenda(venda, produto, 3);
+
+        assertEquals(true, produto.isDisponivel());
+
+        produto.alterarDisponibilidade(false);
+        repositorioProduto.save(produto);
+
+        fachada.deletarVendaId(venda.getId());
+
+        Produto produtoAposExclusao = repositorioProduto
+                .findById(produto.getId())
+                .orElseThrow();
+
+        assertEquals(10, produtoAposExclusao.getQuantidadeDisponivel());
+        assertEquals(false, produtoAposExclusao.isDisponivel());
+    }
 }
