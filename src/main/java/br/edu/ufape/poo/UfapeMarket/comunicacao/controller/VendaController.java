@@ -98,11 +98,7 @@ public class VendaController {
 
         Venda venda = fachada.procurarVendaID(id);
 
-        Produto produto = fachada.procurarProdutoID(request.idProduto());
-
         venda.setDataVenda(request.dataVenda());
-        venda.setQuantidadeVendida(request.quantidadeVendida());
-        venda.setProduto(produto);
 
         Venda atualizada = fachada.salvarVenda(venda);
 
