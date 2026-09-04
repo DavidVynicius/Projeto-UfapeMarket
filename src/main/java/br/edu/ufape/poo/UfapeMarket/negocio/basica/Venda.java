@@ -75,7 +75,7 @@ public class Venda {
 	    }
 
 	    produto.baixarEstoque(quantidade);
-
+	    this.produto = produto;
 	    this.quantidadeVendida = quantidade;
 	}
 	
