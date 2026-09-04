@@ -94,7 +94,7 @@ public interface InterfaceFachada {
             throws VendaProdutoObrigatorioException,
                    ProdutoQuantidadeInvalidaException,
                    ProdutoEstoqueInsuficienteException,
-                   ProdutoIndisponivelException;
+                   ProdutoIndisponivelException, VendaDataObrigatoriaException, ProdutoNomeObrigatorioException, ProdutoDescricaoObrigatoriaException, ProdutoPrecoInvalidoException, ProdutoCategoriaObrigatoriaException;
 
     Venda salvarVenda(Venda venda)
             throws VendaDataObrigatoriaException,
@@ -105,7 +105,7 @@ public interface InterfaceFachada {
 
     Venda procurarVendaID(Long id);
 
-    void deletarVendaId(Long id);
+    void deletarVendaId(Long id) throws ProdutoQuantidadeInvalidaException;
 
 
     Notificacao salvarNotificacao(Notificacao notificacao);

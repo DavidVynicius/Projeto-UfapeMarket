@@ -1,5 +1,7 @@
 package br.edu.ufape.poo.UfapeMarket.comunicacao.controller;
 
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,9 +25,12 @@ import br.edu.ufape.poo.UfapeMarket.negocio.basica.Produto;
 import br.edu.ufape.poo.UfapeMarket.negocio.excecoes.VendaDataObrigatoriaException;
 import br.edu.ufape.poo.UfapeMarket.negocio.excecoes.VendaProdutoObrigatorioException;
 import br.edu.ufape.poo.UfapeMarket.negocio.excecoes.ProdutoQuantidadeInvalidaException;
+import br.edu.ufape.poo.UfapeMarket.negocio.excecoes.ProdutoCategoriaObrigatoriaException;
+import br.edu.ufape.poo.UfapeMarket.negocio.excecoes.ProdutoDescricaoObrigatoriaException;
 import br.edu.ufape.poo.UfapeMarket.negocio.excecoes.ProdutoEstoqueInsuficienteException;
 import br.edu.ufape.poo.UfapeMarket.negocio.excecoes.ProdutoIndisponivelException;
-
+import br.edu.ufape.poo.UfapeMarket.negocio.excecoes.ProdutoNomeObrigatorioException;
+import br.edu.ufape.poo.UfapeMarket.negocio.excecoes.ProdutoPrecoInvalidoException;
 import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/vendas")
@@ -67,7 +72,7 @@ public class VendaController {
                    VendaProdutoObrigatorioException,
                    ProdutoQuantidadeInvalidaException,
                    ProdutoEstoqueInsuficienteException,
-                   ProdutoIndisponivelException {
+                   ProdutoIndisponivelException, ProdutoNomeObrigatorioException, ProdutoDescricaoObrigatoriaException, ProdutoPrecoInvalidoException, ProdutoCategoriaObrigatoriaException {
 
         Venda venda = conversor.paraEntidade(request);
 
@@ -81,10 +86,8 @@ public class VendaController {
                 request.quantidadeVendida()
         );
 
-        Venda salva = fachada.salvarVenda(venda);
-
         return ResponseEntity.ok(
-                conversor.paraResponse(salva)
+                conversor.paraResponse(venda)
         );
     }
     

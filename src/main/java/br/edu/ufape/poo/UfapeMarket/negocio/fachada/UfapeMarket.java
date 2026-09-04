@@ -1,5 +1,7 @@
 package br.edu.ufape.poo.UfapeMarket.negocio.fachada;
 
+
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -159,24 +161,30 @@ public class UfapeMarket implements InterfaceFachada {
     }
 
     @Override
+    @Transactional
     public void fazerVenda(Venda venda, Produto produto, int quantidade)
             throws VendaProdutoObrigatorioException,
                    ProdutoQuantidadeInvalidaException,
                    ProdutoEstoqueInsuficienteException,
-                   ProdutoIndisponivelException {
+                   ProdutoIndisponivelException, ProdutoNomeObrigatorioException, ProdutoDescricaoObrigatoriaException, ProdutoPrecoInvalidoException, ProdutoCategoriaObrigatoriaException, VendaDataObrigatoriaException {
 
         if (!produto.isDisponivel()) {
             throw new ProdutoIndisponivelException();
         }
 
         venda.realizarVenda(produto, quantidade);
+
+        cadastroProduto.salvarProduto(produto);
+
+        cadastroVenda.salvarVenda(venda);
     }
 
     @Override
     public Usuario procurarUsuarioID(Long id)
             throws UsuarioNaoEncontradoException {
 
-        return cadastroUsuario.procurarUsuarioID(id).get();
+        return cadastroUsuario.procurarUsuarioID(id)
+                .orElseThrow(() -> new UsuarioNaoEncontradoException(id));
     }
 
     @Override

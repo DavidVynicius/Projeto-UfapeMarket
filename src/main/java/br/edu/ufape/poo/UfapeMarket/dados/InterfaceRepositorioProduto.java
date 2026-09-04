@@ -8,4 +8,5 @@ import br.edu.ufape.poo.UfapeMarket.negocio.basica.Produto;
 @Repository
 public interface InterfaceRepositorioProduto extends JpaRepository<Produto, Long>
 {
+	
 }

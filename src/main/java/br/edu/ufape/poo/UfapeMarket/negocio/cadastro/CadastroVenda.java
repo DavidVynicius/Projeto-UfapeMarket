@@ -1,5 +1,6 @@
 package br.edu.ufape.poo.UfapeMarket.negocio.cadastro;
 
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,6 +55,7 @@ public class CadastroVenda implements InterfaceCadastroVenda {
     }
 
     @Override
+    @Transactional
     public void deletarVendaId(Long id) throws ProdutoQuantidadeInvalidaException {
 
         Venda venda = repositorioVenda.findById(id)
