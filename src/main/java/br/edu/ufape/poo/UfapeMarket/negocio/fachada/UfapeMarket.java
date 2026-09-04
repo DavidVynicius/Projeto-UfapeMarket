@@ -103,7 +103,9 @@ public class UfapeMarket implements InterfaceFachada {
 
     @Override
     public Categoria procurarCategoriaID(Long id) {
-        return cadastroCategoria.encontrarCategoriaId(id).get();
+        return cadastroCategoria.encontrarCategoriaId(id)
+                .orElseThrow(() ->
+                        new IllegalArgumentException("Categoria não encontrada."));
     }
 
     @Override
@@ -259,7 +261,7 @@ public class UfapeMarket implements InterfaceFachada {
     }
 
     @Override
-    public void deletarVendaId(Long id) {
+    public void deletarVendaId(Long id) throws ProdutoQuantidadeInvalidaException {
         cadastroVenda.deletarVendaId(id);
     }
     

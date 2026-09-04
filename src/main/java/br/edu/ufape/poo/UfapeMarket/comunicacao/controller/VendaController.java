@@ -109,7 +109,7 @@ public class VendaController {
     
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarVenda(
-            @PathVariable Long id) {
+            @PathVariable Long id) throws ProdutoQuantidadeInvalidaException {
 
         fachada.deletarVendaId(id);
 
