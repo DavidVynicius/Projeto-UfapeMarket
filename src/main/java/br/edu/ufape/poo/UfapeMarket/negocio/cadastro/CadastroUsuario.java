@@ -41,13 +41,13 @@ public class CadastroUsuario implements InterfaceCadastroUsuario {
 	    	throw new UsuarioEmailInvalidoException(usuario.getEmailInstitucional());
 	    }
 	    
-	    if (repositorioUsuario.findByEmailInstitucional(
-	            usuario.getEmailInstitucional()) != null) {
+	    Usuario usuarioExistente = repositorioUsuario.findByEmailInstitucional(
+	            usuario.getEmailInstitucional());
 
+	    if (usuarioExistente != null && usuarioExistente.getId() != usuario.getId()) {
 	        throw new UsuarioEmailJaCadastradoException(
 	                usuario.getEmailInstitucional());
 	    }
-
 		
 		
 		
