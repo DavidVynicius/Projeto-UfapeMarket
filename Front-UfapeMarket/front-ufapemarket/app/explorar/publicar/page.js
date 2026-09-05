@@ -27,7 +27,7 @@ export default function PublicarProdutoPage() {
   });
   const [ativo, setAtivo] = useState(true);
 
-  // Imagens predefinidas (simulando o carrossel da imagem)
+  // Imagens predefinidas
   const imagensPreset = [
     "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&q=80&w=400",
     "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=400",
@@ -80,7 +80,7 @@ export default function PublicarProdutoPage() {
       numero.toLocaleString("pt-BR", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
-      }),
+      })
     );
   };
 
@@ -91,7 +91,6 @@ export default function PublicarProdutoPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Pega o ID do usuário logado do localStorage (ou define 1 como fallback se não encontrar)
     let usuarioId = 1;
     const usuarioSalvo = localStorage.getItem("usuarioLogado");
     if (usuarioSalvo) {
@@ -103,20 +102,20 @@ export default function PublicarProdutoPage() {
       }
     }
 
-    // Estrutura o JSON exatamente igual ao ProdutoDTORequest do Spring Boot
+    // JSON alinhado exatamente com o record ProdutoDTORequest
     const novoProduto = {
       nome: nome,
       descricaoProduto: descricao,
-      preco: precoReal,
-      quantidadeDisponivel: parseInt(quantidade) || 1,
-      idCategoria: parseInt(categoria) || 1, // Envia o ID numérico da categoria
-      idVendedor: usuarioId, // Envia o ID numérico do usuário logado
       fotoProduto: imagemSelecionada,
+      preco: precoReal,
+      disponivel: Boolean(ativo),
+      quantidadeDisponivel: parseInt(quantidade) || 1,
       turnoDisponibilidade: turno,
       formasPagamento: Object.keys(pagamentos)
         .filter((k) => pagamentos[k])
         .join(", "),
-      disponivelParaVenda: ativo,
+      idCategoria: parseInt(categoria) || 1,
+      idVendedor: usuarioId,
     };
 
     try {
@@ -159,7 +158,7 @@ export default function PublicarProdutoPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        {/* COLUNA ESQUERDA / CENTRO: FORMULÁRIO (Ocupa 2 colunas) */}
+        {/* COLUNA ESQUERDA / CENTRO: FORMULÁRIO */}
         <form onSubmit={handleSubmit} className="lg:col-span-2 space-y-6">
           {/* Seção Foto do Produto */}
           <div className="bg-surface p-6 rounded-3xl border border-line space-y-4">
@@ -186,7 +185,6 @@ export default function PublicarProdutoPage() {
                 </div>
               ))}
 
-              {/* Botão Upload Fictício */}
               <label className="w-16 h-16 rounded-2xl border-2 border-dashed border-line flex flex-col items-center justify-center text-ink-faint cursor-pointer hover:border-brand-500 hover:text-brand-500 transition-all shrink-0">
                 <span className="text-lg font-bold">+</span>
                 <span className="text-[10px]">Upload</span>
@@ -257,7 +255,7 @@ export default function PublicarProdutoPage() {
               </div>
             </div>
 
-            {/* Categoria (Do Banco) e Turno */}
+            {/* Categoria e Turno */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-1.5">
                 <label className="text-xs font-bold text-ink uppercase tracking-wider">
@@ -376,14 +374,13 @@ export default function PublicarProdutoPage() {
           </div>
         </form>
 
-        {/* COLUNA DIREITA: PRÉ-VISUALIZAÇÃO AO VIVO (Sticky) */}
+        {/* COLUNA DIREITA: PRÉ-VISUALIZAÇÃO AO VIVO */}
         <div className="lg:sticky lg:top-24 space-y-3">
           <span className="text-xs font-bold text-ink-faint uppercase tracking-wider block">
             👁️ Pré-visualização
           </span>
 
           <div className="bg-surface rounded-3xl border border-line overflow-hidden shadow-sm flex flex-col">
-            {/* Foto do Card */}
             <div className="relative h-56 w-full bg-canvas overflow-hidden">
               <img
                 src={imagemSelecionada}
@@ -392,7 +389,6 @@ export default function PublicarProdutoPage() {
               />
             </div>
 
-            {/* Textos do Card */}
             <div className="p-4 space-y-3">
               <div className="space-y-1">
                 <h3 className="font-bold text-base text-ink line-clamp-1">
@@ -407,7 +403,6 @@ export default function PublicarProdutoPage() {
                 {descricao || "A descrição do produto aparecerá aqui."}
               </p>
 
-              {/* Vendedor */}
               <div className="pt-3 border-t border-line flex items-center gap-2">
                 <div className="w-6 h-6 rounded-full bg-brand-500 text-white text-xs font-bold flex items-center justify-center">
                   {nomeUsuarioLogado.charAt(0).toUpperCase()}
