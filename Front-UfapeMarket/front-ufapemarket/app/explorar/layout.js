@@ -9,6 +9,7 @@ export default function ExplorarLayout({ children }) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  const [isMounted, setIsMounted] = useState(false);
   const [nomeUsuario, setNomeUsuario] = useState("");
   const [emailUsuario, setEmailUsuario] = useState("");
   const [qtdNotificacoes, setQtdNotificacoes] = useState(0);
@@ -19,6 +20,7 @@ export default function ExplorarLayout({ children }) {
   const menuRef = useRef(null);
 
   useEffect(() => {
+    setIsMounted(true);
     const usuarioSalvo = localStorage.getItem("usuarioLogado");
     if (usuarioSalvo) {
       try {
@@ -27,7 +29,6 @@ export default function ExplorarLayout({ children }) {
         if (dados.emailInstitucional) setEmailUsuario(dados.emailInstitucional);
         if (dados.fotoPerfil) setFotoPerfil(dados.fotoPerfil);
 
-        // Busca a quantidade real de notificações não lidas do backend
         fetch(`http://localhost:8081/notificacoes/usuario/${dados.id}`)
           .then((res) => {
             if (!res.ok) throw new Error("Erro ao buscar notificações");
@@ -36,18 +37,17 @@ export default function ExplorarLayout({ children }) {
           .then((notificacoes) => {
             if (Array.isArray(notificacoes)) {
               const naoLidas = notificacoes.filter((n) => !n.lida).length;
-              setQtdNotificacoes(naoLidas + 1); // +1 considerando a de teste padrão
+              setQtdNotificacoes(naoLidas + 1);
             }
           })
           .catch(() => {
-            setQtdNotificacoes(1); // Fallback padrão
+            setQtdNotificacoes(1);
           });
       } catch (e) {
         console.error(e);
       }
     }
 
-    // Sincroniza o input com a URL atual se estiver na página de busca
     const termoUrl = searchParams.get("termo");
     if (termoUrl) {
       setTermoPesquisa(termoUrl);
@@ -82,12 +82,16 @@ export default function ExplorarLayout({ children }) {
   const inicial = nomeUsuario ? nomeUsuario.charAt(0).toUpperCase() : "U";
   const isActive = (path) => pathname === path;
 
+  // Evita disparar erro de hidratação enquanto o componente não monta no cliente
+  if (!isMounted) {
+    return <div className="min-h-screen bg-canvas" />;
+  }
+
   return (
     <div className="min-h-screen bg-canvas text-ink font-sans flex w-full relative">
       {/* SIDEBAR ESQUERDA FIXA */}
       <aside className="w-64 bg-surface border-r border-line p-6 flex-col justify-between shrink-0 hidden lg:flex h-screen fixed top-0 left-0 z-50 overflow-y-auto">
         <div className="space-y-6">
-          {/* Logo UFAPE Market Clicável para a Página Inicial */}
           <Link
             href="/explorar"
             className="flex items-center gap-3 group cursor-pointer"
@@ -317,11 +321,9 @@ export default function ExplorarLayout({ children }) {
 
       {/* ÁREA DIREITA */}
       <div className="flex-1 flex flex-col min-w-0 lg:pl-64">
-        {/* BARRA SUPERIOR COM BUSCA FUNCIONAL */}
         <header className="bg-surface border-b border-line px-6 py-4 flex items-center justify-between gap-4 sticky top-0 z-40">
           <div className="flex-1 max-w-[200px] hidden sm:block"></div>
 
-          {/* BARRA DE PESQUISA CENTRALIZADA */}
           <div className="flex-1 max-w-lg mx-auto">
             <form onSubmit={handleBuscar} className="relative">
               <input
@@ -352,7 +354,6 @@ export default function ExplorarLayout({ children }) {
             </form>
           </div>
 
-          {/* Lado Direito */}
           <div className="flex items-center gap-3 justify-end flex-1 max-w-[250px]">
             <Link href="/explorar/publicar">
               <button className="w-9 h-9 rounded-full bg-canvas hover:bg-line flex items-center justify-center font-bold text-ink-soft transition-all cursor-pointer">
@@ -360,7 +361,6 @@ export default function ExplorarLayout({ children }) {
               </button>
             </Link>
 
-            {/* BOTÃO DE NOTIFICAÇÕES COM BADGE DINÂMICA */}
             <div className="relative">
               <Link href="/explorar/notificacoes">
                 <button
@@ -383,7 +383,6 @@ export default function ExplorarLayout({ children }) {
                 </button>
               </Link>
 
-              {/* Contador dinâmico: só aparece se houver notificações não lidas */}
               {qtdNotificacoes > 0 && (
                 <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-danger text-white text-[10px] font-bold flex items-center justify-center shadow-xs pointer-events-none animate-in zoom-in">
                   {qtdNotificacoes}
@@ -409,7 +408,6 @@ export default function ExplorarLayout({ children }) {
 
               {menuAberto && (
                 <div className="absolute right-0 mt-3 w-72 bg-surface rounded-3xl border border-line shadow-xl py-3 z-50">
-                  {/* Cabeçalho do Card com Informações e Foto */}
                   <div className="px-4 pb-3 border-b border-line flex items-center gap-3">
                     <div className="w-11 h-11 rounded-full bg-brand-500 text-white font-bold flex items-center justify-center overflow-hidden shrink-0 border border-brand-600">
                       {fotoPerfil ? (
