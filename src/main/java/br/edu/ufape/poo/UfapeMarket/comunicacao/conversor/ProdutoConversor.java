@@ -17,7 +17,7 @@ public class ProdutoConversor {
         produto.setDescricaoProduto(dto.descricaoProduto());
         produto.setFotoProduto(dto.fotoProduto());
         produto.setPreco(dto.preco());
-        produto.setDisponivel(dto.disponivel());
+        produto.setDisponivelParaVenda(dto.disponivel());
         produto.setQuantidadeDisponivel(dto.quantidadeDisponivel());
         produto.setTurnoDisponibilidade(dto.turnoDisponibilidade());
         produto.setFormasPagamento(dto.formasPagamento());
@@ -41,7 +41,7 @@ public class ProdutoConversor {
 	            produto.getDescricaoProduto(),
 	            produto.getFotoProduto(),
 	            produto.getPreco(),
-	            produto.isDisponivel(),
+	            produto.getDisponivelParaVenda(),
 	            produto.getQuantidadeDisponivel(),
 	            produto.getTurnoDisponibilidade(),
 	            produto.getFormasPagamento(),

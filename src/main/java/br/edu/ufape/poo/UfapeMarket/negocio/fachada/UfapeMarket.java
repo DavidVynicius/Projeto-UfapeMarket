@@ -168,7 +168,7 @@ public class UfapeMarket implements InterfaceFachada {
                    ProdutoEstoqueInsuficienteException,
                    ProdutoIndisponivelException, ProdutoNomeObrigatorioException, ProdutoDescricaoObrigatoriaException, ProdutoPrecoInvalidoException, ProdutoCategoriaObrigatoriaException, VendaDataObrigatoriaException {
 
-        if (!produto.isDisponivel()) {
+        if (!produto.getDisponivelParaVenda()) {
             throw new ProdutoIndisponivelException();
         }
 

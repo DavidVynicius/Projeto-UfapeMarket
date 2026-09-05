@@ -15,6 +15,9 @@ export default function PublicarProdutoPage() {
 
   const [quantidade, setQuantidade] = useState("1");
 
+  // Estado unificado e corrigido para a disponibilidade
+  const [disponivelParaVenda, setDisponivelParaVenda] = useState(true);
+
   const [categoriasBanco, setCategoriasBanco] = useState([]);
   const [categoria, setCategoria] = useState("");
 
@@ -25,7 +28,6 @@ export default function PublicarProdutoPage() {
     cartao: false,
     transferencia: false,
   });
-  const [ativo, setAtivo] = useState(true);
 
   // Imagens predefinidas
   const imagensPreset = [
@@ -92,23 +94,26 @@ export default function PublicarProdutoPage() {
     e.preventDefault();
 
     let usuarioId = 1;
+    let vendedorNome = nomeUsuarioLogado;
+
     const usuarioSalvo = localStorage.getItem("usuarioLogado");
     if (usuarioSalvo) {
       try {
         const dados = JSON.parse(usuarioSalvo);
         if (dados.id) usuarioId = dados.id;
+        if (dados.nome) vendedorNome = dados.nome;
       } catch (err) {
         console.error(err);
       }
     }
 
-    // JSON alinhado exatamente com o record ProdutoDTORequest
+    // JSON alinhado com o backend Spring Boot
     const novoProduto = {
       nome: nome,
       descricaoProduto: descricao,
       fotoProduto: imagemSelecionada,
       preco: precoReal,
-      disponivel: Boolean(ativo),
+      disponivel: Boolean(disponivelParaVenda),
       quantidadeDisponivel: parseInt(quantidade) || 1,
       turnoDisponibilidade: turno,
       formasPagamento: Object.keys(pagamentos)
@@ -116,6 +121,7 @@ export default function PublicarProdutoPage() {
         .join(", "),
       idCategoria: parseInt(categoria) || 1,
       idVendedor: usuarioId,
+      nomeVendedor: vendedorNome,
     };
 
     try {
@@ -350,9 +356,9 @@ export default function PublicarProdutoPage() {
               </div>
               <input
                 type="checkbox"
-                checked={ativo}
-                onChange={() => setAtivo(!ativo)}
-                className="toggle accent-brand-500 w-11 h-6 cursor-pointer"
+                checked={disponivelParaVenda}
+                onChange={(e) => setDisponivelParaVenda(e.target.checked)}
+                className="toggle accent-brand-500 w-5 h-5 cursor-pointer"
               />
             </div>
           </div>

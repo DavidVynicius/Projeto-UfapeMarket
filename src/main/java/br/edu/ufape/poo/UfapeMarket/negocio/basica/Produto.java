@@ -20,7 +20,10 @@ public class Produto {
     private String descricaoProduto;
     private String fotoProduto;
     private double preco;
-    private boolean disponivel;
+    
+    // Nome corrigido para corresponder exatamente ao JSON enviado pelo Frontend
+    private Boolean disponivelParaVenda = true;
+    
     private int quantidadeDisponivel;
     private String turnoDisponibilidade;
     private String formasPagamento;
@@ -29,19 +32,18 @@ public class Produto {
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
 	
-    
 	@ManyToOne
 	@JoinColumn(name = "vendedor_id")
 	private Usuario vendedor;
 		
 	@OneToMany(mappedBy = "produto")
-    private List<Venda> vendas =  new ArrayList<>();
+    private List<Venda> vendas = new ArrayList<>();
 
 	public Produto() {
 		
 	}
 	
-	public Produto(long id, String nome, String descricaoProduto, String fotoProduto, double preco, boolean disponivel,
+	public Produto(long id, String nome, String descricaoProduto, String fotoProduto, double preco, Boolean disponivelParaVenda,
 			int quantidadeDisponivel, String turnoDisponibilidade, String formasPagamento, Categoria categoria,
 			Usuario vendedor, List<Venda> vendas) {
 		super();
@@ -50,14 +52,14 @@ public class Produto {
 		this.descricaoProduto = descricaoProduto;
 		this.fotoProduto = fotoProduto;
 		this.preco = preco;
-		this.disponivel = disponivel;
+		this.disponivelParaVenda = disponivelParaVenda;
 		this.quantidadeDisponivel = quantidadeDisponivel;
 		this.turnoDisponibilidade = turnoDisponibilidade;
 		this.formasPagamento = formasPagamento;
 		this.categoria = categoria;
 		this.vendedor = vendedor;
 		this.vendas = vendas;
-		}
+	}
 	
 	public void alterarPreco(double novoPreco) throws ProdutoPrecoInvalidoException {
 		if(novoPreco < 0.01) {
@@ -83,7 +85,7 @@ public class Produto {
 	            this.quantidadeDisponivel - quantidade;
 
 	    if (this.quantidadeDisponivel == 0) {
-	        this.disponivel = false;
+	        this.disponivelParaVenda = false;
 	    }
 	}
 	
@@ -97,12 +99,12 @@ public class Produto {
 	    this.quantidadeDisponivel += quantidade;
 	}
 	
-	public void alterarDisponibilidade(boolean disponivel) {
+	public void alterarDisponibilidade(Boolean disponivelParaVenda) {
 		if(this.quantidadeDisponivel == 0) {
-			this.disponivel = false;
+			this.disponivelParaVenda = false;
 		}
 		else {
-		this.disponivel = disponivel;
+			this.disponivelParaVenda = disponivelParaVenda != null ? disponivelParaVenda : true;
 		}
 	}
 	
@@ -115,6 +117,7 @@ public class Produto {
 
 	    this.descricaoProduto = descricao;
 	}
+	
 	public void alterarNome(String nome)
 	        throws ProdutoNomeObrigatorioException {
 
@@ -124,6 +127,7 @@ public class Produto {
 
 	    this.nome = nome;
 	}
+	
 	public void alterarCategoria(Categoria categoria)
 	        throws ProdutoCategoriaObrigatoriaException {
 
@@ -174,12 +178,12 @@ public class Produto {
 		this.preco = preco;
 	}
 
-	public boolean isDisponivel() {
-		return disponivel;
+	public Boolean getDisponivelParaVenda() {
+		return disponivelParaVenda;
 	}
 
-	public void setDisponivel(boolean disponivel) {
-		this.disponivel = disponivel;
+	public void setDisponivelParaVenda(Boolean disponivelParaVenda) {
+		this.disponivelParaVenda = disponivelParaVenda != null ? disponivelParaVenda : true;
 	}
 
 	public int getQuantidadeDisponivel() {
@@ -229,6 +233,4 @@ public class Produto {
 	public void setVendas(List<Venda> vendas) {
 		this.vendas = vendas;
 	}
-
-	
 }
