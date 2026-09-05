@@ -1,27 +1,43 @@
 @import "tailwindcss";
-@plugin "daisyui";
+@plugin "daisyui" {
+  themes: light;
+}
+
+@theme {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  /* Cores Oficiais — UFAPE Market */
+  --color-canvas: #f6f5f1;
+  --color-surface: #ffffff;
+  --color-ink: #1c2620;
+  --color-ink-soft: #55625b;
+  --color-ink-faint: #8b968f;
+  --color-line: #e7e6df;
+
+  /* Brand Green Shades */
+  --color-brand-50: #eefaf1;
+  --color-brand-100: #d3f2dc;
+  --color-brand-500: #0f8049;
+  --color-brand-600: #0c663c;
+  --color-brand-700: #0b5230;
+
+  /* Feedback Colors */
+  --color-danger: #d64545;
+  --color-danger-soft: #fbe3e3;
+}
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f6f5f1;
+  --foreground: #1c2620;
+  color-scheme: light !important;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+html,
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  height: 100%;
+  background-color: #f6f5f1 !important;
+  color: #1c2620 !important;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
 }

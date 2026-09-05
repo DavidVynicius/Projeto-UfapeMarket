@@ -2,6 +2,7 @@ package br.edu.ufape.poo.UfapeMarket.comunicacao.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,7 @@ import br.edu.ufape.poo.UfapeMarket.negocio.excecoes.UsuarioNaoEncontradoExcepti
 import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/produtos")
+@CrossOrigin(origins = "*")
 public class ProdutoController {
 
     @Autowired

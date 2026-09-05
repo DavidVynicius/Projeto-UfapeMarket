@@ -45,6 +45,7 @@ export default function MensagensPage() {
   const [texto, setTexto] = useState('');
   const [carregando, setCarregando] = useState(false);
 
+  // Paleta oficial UFAPE Market em HEX
   const colors = {
     canvas: '#f6f5f1',
     surface: '#ffffff',
@@ -62,10 +63,7 @@ export default function MensagensPage() {
     setMensagens(conversa.mensagensIniciais || []);
   };
 
-  // Redireciona ou exibe aviso enquanto a tela de produtos não existe
   const handleAbrirProduto = (produtoId) => {
-    // Quando a rota de produtos existir, desative o alert e ative o router.push:
-    // router.push(`/produtos/${produtoId}`);
     alert(`Redirecionando para os detalhes do produto #${produtoId}... (A página de produtos será integrada em breve!)`);
   };
 
@@ -113,7 +111,7 @@ export default function MensagensPage() {
     }
   };
 
-  // DELETE: Remover mensagem por ID (API + Estado local)
+  // DELETE: Remover mensagem por ID
   const handleRemoverMensagem = async (idMensagem) => {
     try {
       await fetch(`http://localhost:8081/mensagens/${idMensagem}`, {
@@ -160,7 +158,10 @@ export default function MensagensPage() {
             <h1 className="text-xl font-bold tracking-tight" style={{ color: colors.ink }}>
               Conversas
             </h1>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded-full" style={{ backgroundColor: colors.brand50, color: colors.brand500 }}>
+            <span 
+              className="text-xs font-semibold px-2.5 py-1 rounded-full" 
+              style={{ backgroundColor: colors.brand50, color: colors.brand500 }}
+            >
               {conversas.length} ativas
             </span>
           </div>
@@ -208,7 +209,7 @@ export default function MensagensPage() {
         </div>
 
         {/* COLUNA DIREITA: Chat */}
-        <div className="flex-1 flex flex-col bg-white">
+        <div className="flex-1 flex flex-col" style={{ backgroundColor: colors.surface }}>
           
           {/* Cabeçalho */}
           <div 
@@ -235,7 +236,7 @@ export default function MensagensPage() {
           {conversaAtiva.produto && (
             <div 
               onClick={() => handleAbrirProduto(conversaAtiva.produtoId)}
-              className="p-3 px-4 border-b flex items-center justify-between cursor-pointer hover:bg-[#f3f2eb] transition-colors group"
+              className="p-3 px-4 border-b flex items-center justify-between cursor-pointer transition-colors group"
               style={{ backgroundColor: '#fcfcf9', borderColor: colors.line }}
               title="Clique para ver os detalhes do produto"
             >
@@ -267,7 +268,7 @@ export default function MensagensPage() {
           )}
 
           {/* Histórico das Mensagens */}
-          <div className="flex-1 p-6 overflow-y-auto space-y-4 bg-[#faf9f6]">
+          <div className="flex-1 p-6 overflow-y-auto space-y-4" style={{ backgroundColor: '#faf9f6' }}>
             {mensagens.length === 0 ? (
               <div className="h-full flex items-center justify-center text-center">
                 <p className="text-xs" style={{ color: colors.inkFaint }}>
