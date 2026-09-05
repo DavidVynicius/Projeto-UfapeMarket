@@ -38,7 +38,7 @@ class UfapeMarketTest {
     void fazerVendaProdutoIndisponivelTest() {
 
         Produto produto = new Produto();
-        produto.setDisponivel(false);
+        produto.setDisponivelParaVenda(false);
 
         Venda venda = new Venda();
 
@@ -61,7 +61,7 @@ class UfapeMarketTest {
         produto.setDescricaoProduto("Produto para teste");
         produto.setPreco(10.0);
         produto.setQuantidadeDisponivel(10);
-        produto.setDisponivel(true);
+        produto.setDisponivelParaVenda(true);
         produto.setCategoria(categoria);
 
         produto = repositorioProduto.save(produto);
@@ -106,7 +106,7 @@ class UfapeMarketTest {
     	produto.setDescricaoProduto("Produto para teste de exclusao");
     	produto.setPreco(10.0);
     	produto.setQuantidadeDisponivel(10);
-    	produto.setDisponivel(true);
+    	produto.setDisponivelParaVenda(true);
     	produto.setCategoria(categoria);
 
     	produto = repositorioProduto.save(produto);
@@ -129,7 +129,7 @@ class UfapeMarketTest {
                 .orElseThrow();
 
         assertEquals(10, produtoAposExclusao.getQuantidadeDisponivel());
-        assertEquals(true, produtoAposExclusao.isDisponivel());
+        assertEquals(true, produtoAposExclusao.getDisponivelParaVenda());
     }
     
     @Test
@@ -145,7 +145,7 @@ class UfapeMarketTest {
         produto.setDescricaoProduto("Produto para teste de disponibilidade");
         produto.setPreco(10.0);
         produto.setQuantidadeDisponivel(10);
-        produto.setDisponivel(true);
+        produto.setDisponivelParaVenda(true);
         produto.setCategoria(categoria);
 
         produto = repositorioProduto.save(produto);
@@ -155,7 +155,7 @@ class UfapeMarketTest {
 
         fachada.fazerVenda(venda, produto, 3);
 
-        assertEquals(true, produto.isDisponivel());
+        assertEquals(true, produto.getDisponivelParaVenda());
 
         produto.alterarDisponibilidade(false);
         repositorioProduto.save(produto);
@@ -167,6 +167,6 @@ class UfapeMarketTest {
                 .orElseThrow();
 
         assertEquals(10, produtoAposExclusao.getQuantidadeDisponivel());
-        assertEquals(false, produtoAposExclusao.isDisponivel());
+        assertEquals(false, produtoAposExclusao.getDisponivelParaVenda());
     }
 }
