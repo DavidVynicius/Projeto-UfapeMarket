@@ -26,6 +26,22 @@ export default function ExplorarLayout({ children }) {
         if (dados.nome) setNomeUsuario(dados.nome);
         if (dados.emailInstitucional) setEmailUsuario(dados.emailInstitucional);
         if (dados.fotoPerfil) setFotoPerfil(dados.fotoPerfil);
+
+        // Busca a quantidade real de notificações não lidas do backend
+        fetch(`http://localhost:8081/notificacoes/usuario/${dados.id}`)
+          .then((res) => {
+            if (!res.ok) throw new Error("Erro ao buscar notificações");
+            return res.json();
+          })
+          .then((notificacoes) => {
+            if (Array.isArray(notificacoes)) {
+              const naoLidas = notificacoes.filter((n) => !n.lida).length;
+              setQtdNotificacoes(naoLidas + 1); // +1 considerando a de teste padrão
+            }
+          })
+          .catch(() => {
+            setQtdNotificacoes(1); // Fallback padrão
+          });
       } catch (e) {
         console.error(e);
       }
@@ -71,14 +87,18 @@ export default function ExplorarLayout({ children }) {
       {/* SIDEBAR ESQUERDA FIXA */}
       <aside className="w-64 bg-surface border-r border-line p-6 flex-col justify-between shrink-0 hidden lg:flex h-screen fixed top-0 left-0 z-50 overflow-y-auto">
         <div className="space-y-6">
-          <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-brand-500 text-white font-black flex items-center justify-center text-lg shrink-0">
+          {/* Logo UFAPE Market Clicável para a Página Inicial */}
+          <Link
+            href="/explorar"
+            className="flex items-center gap-3 group cursor-pointer"
+          >
+            <div className="w-9 h-9 rounded-full bg-brand-500 text-white font-black flex items-center justify-center text-lg shrink-0 group-hover:bg-brand-600 transition-all shadow-sm">
               U
             </div>
-            <span className="font-bold text-lg tracking-tight text-brand-500">
+            <span className="font-bold text-lg tracking-tight text-brand-500 group-hover:text-brand-600 transition-colors">
               UFAPE <span className="text-ink">Market</span>
             </span>
-          </div>
+          </Link>
 
           <Link href="/explorar/publicar" className="block w-full">
             <button className="w-full py-3 px-4 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-semibold text-sm flex items-center justify-center gap-2 shadow-sm transition-all active:scale-95 cursor-pointer">
@@ -215,8 +235,12 @@ export default function ExplorarLayout({ children }) {
             </span>
             <nav className="space-y-1">
               <Link
-                href="/meus-produtos"
-                className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-ink-soft hover:bg-canvas transition-all"
+                href="/explorar/meus-produtos"
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all ${
+                  isActive("/explorar/meus-produtos")
+                    ? "font-semibold bg-brand-50 text-brand-700"
+                    : "font-medium text-ink-soft hover:bg-canvas"
+                }`}
               >
                 <svg
                   className="w-5 h-5 shrink-0"
@@ -234,8 +258,12 @@ export default function ExplorarLayout({ children }) {
                 Meus produtos
               </Link>
               <Link
-                href="/minhas-vendas"
-                className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-ink-soft hover:bg-canvas transition-all"
+                href="/explorar/minhas-vendas"
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all ${
+                  isActive("/explorar/minhas-vendas")
+                    ? "font-semibold bg-brand-50 text-brand-700"
+                    : "font-medium text-ink-soft hover:bg-canvas"
+                }`}
               >
                 <svg
                   className="w-5 h-5 shrink-0"
@@ -251,6 +279,29 @@ export default function ExplorarLayout({ children }) {
                   />
                 </svg>
                 Minhas vendas
+              </Link>
+              <Link
+                href="/explorar/minhas-compras"
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all ${
+                  isActive("/explorar/minhas-compras")
+                    ? "font-semibold bg-brand-50 text-brand-700"
+                    : "font-medium text-ink-soft hover:bg-canvas"
+                }`}
+              >
+                <svg
+                  className="w-5 h-5 shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                  />
+                </svg>
+                Minhas compras
               </Link>
             </nav>
           </div>
@@ -309,6 +360,37 @@ export default function ExplorarLayout({ children }) {
               </button>
             </Link>
 
+            {/* BOTÃO DE NOTIFICAÇÕES COM BADGE DINÂMICA */}
+            <div className="relative">
+              <Link href="/explorar/notificacoes">
+                <button
+                  className="w-9 h-9 rounded-full bg-canvas hover:bg-line flex items-center justify-center text-ink-soft transition-all cursor-pointer relative"
+                  title="Notificações"
+                >
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                    />
+                  </svg>
+                </button>
+              </Link>
+
+              {/* Contador dinâmico: só aparece se houver notificações não lidas */}
+              {qtdNotificacoes > 0 && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-danger text-white text-[10px] font-bold flex items-center justify-center shadow-xs pointer-events-none animate-in zoom-in">
+                  {qtdNotificacoes}
+                </span>
+              )}
+            </div>
+
             <div className="relative" ref={menuRef}>
               <button
                 onClick={() => setMenuAberto(!menuAberto)}
@@ -327,9 +409,18 @@ export default function ExplorarLayout({ children }) {
 
               {menuAberto && (
                 <div className="absolute right-0 mt-3 w-72 bg-surface rounded-3xl border border-line shadow-xl py-3 z-50">
+                  {/* Cabeçalho do Card com Informações e Foto */}
                   <div className="px-4 pb-3 border-b border-line flex items-center gap-3">
-                    <div className="w-11 h-11 rounded-full bg-brand-500 text-white font-bold flex items-center justify-center overflow-hidden shrink-0">
-                      <span>{inicial}</span>
+                    <div className="w-11 h-11 rounded-full bg-brand-500 text-white font-bold flex items-center justify-center overflow-hidden shrink-0 border border-brand-600">
+                      {fotoPerfil ? (
+                        <img
+                          src={fotoPerfil}
+                          alt="Perfil"
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <span>{inicial}</span>
+                      )}
                     </div>
                     <div className="overflow-hidden">
                       <p className="font-bold text-sm text-ink truncate">
