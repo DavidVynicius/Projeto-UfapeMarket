@@ -1,23 +1,31 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
-export default function ConversasPage() {
+function ConteudoConversas() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  
+  const vendedorParam = searchParams.get("vendedor");
+  const nomeVendedorParam = searchParams.get("nomeVendedor");
+  const produtoIdParam = searchParams.get("produtoId");
+  const produtoNomeParam = searchParams.get("produtoNome");
+  const produtoPrecoParam = searchParams.get("produtoPreco");
+  const produtoFotoParam = searchParams.get("produtoFoto");
+
   const [conversas, setConversas] = useState([]);
   const [conversaAtivaId, setConversaAtivaId] = useState(null);
   const [novoTexto, setNovoTexto] = useState("");
   const [carregando, setCarregando] = useState(true);
 
   useEffect(() => {
-    // Busca produtos reais do banco de dados para vincular nas conversas de exemplo
+    // Busca produtos reais do banco de dados
     fetch("http://localhost:8081/produtos")
       .then((res) => res.json())
       .then((produtos) => {
-        // Cria conversas dinâmicas baseadas nos produtos reais do banco (se houver)
-        const conversasReais = produtos.slice(0, 3).map((prod, index) => ({
+        let conversasReais = produtos.slice(0, 3).map((prod, index) => ({
           id: prod.id || index + 1,
           vendedorId: prod.vendedor?.id || null,
           nome: prod.vendedor?.nome || "Estudante UFAPE",
@@ -45,6 +53,32 @@ export default function ConversasPage() {
           ],
         }));
 
+        // Se o usuário veio diretamente de um produto específico clicando em "Conversar"
+        if (produtoNomeParam) {
+          const idPersonalizado = Number(produtoIdParam) || 999;
+          const novaConversaEspecifica = {
+            id: idPersonalizado,
+            vendedorId: Number(vendedorParam) || null,
+            nome: nomeVendedorParam || "Estudante UFAPE",
+            curso: "Ciência da Computação",
+            foto: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150",
+            produto: produtoNomeParam,
+            preco: Number(produtoPrecoParam) || 0.0,
+            fotoProduto: produtoFotoParam || "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&q=80&w=150",
+            horario: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+            mensagens: [
+              {
+                remetente: "eu",
+                texto: `Olá! Tenho interesse no seu produto: ${produtoNomeParam} (R$ ${produtoPrecoParam}). Ainda está disponível?`,
+                horario: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+              }
+            ]
+          };
+
+          // Adiciona ou joga essa conversa para o topo da lista
+          conversasReais = [novaConversaEspecifica, ...conversasReais.filter(c => c.id !== idPersonalizado)];
+        }
+
         if (conversasReais.length > 0) {
           setConversas(conversasReais);
           setConversaAtivaId(conversasReais[0].id);
@@ -55,7 +89,7 @@ export default function ConversasPage() {
         console.error("Erro ao carregar produtos para conversas:", err);
         setCarregando(false);
       });
-  }, []);
+  }, [produtoNomeParam, produtoIdParam, vendedorParam, nomeVendedorParam, produtoPrecoParam, produtoFotoParam]);
 
   const conversaAtual =
     conversas.find((c) => c.id === conversaAtivaId) || conversas[0];
@@ -91,10 +125,8 @@ export default function ConversasPage() {
 
   const lidarComCliquePerfil = (vendedorId) => {
     if (vendedorId) {
-      // Se for um usuário real com ID no banco, vai para a rota de perfil dele
       router.push(`/explorar/usuarios/${vendedorId}`);
     } else {
-      // Se não for um perfil real cadastrado com ID, avisa o usuário educadamente
       alert(
         "Este contato é um perfil de demonstração e não possui página pública cadastrada.",
       );
@@ -304,5 +336,13 @@ export default function ConversasPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function ConversasPage() {
+  return (
+    <Suspense fallback={<div className="text-center py-16 text-ink-faint">Carregando conversas...</div>}>
+      <ConteudoConversas />
+    </Suspense>
   );
 }

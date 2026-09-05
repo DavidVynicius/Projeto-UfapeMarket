@@ -6,11 +6,9 @@ import br.edu.ufape.poo.UfapeMarket.negocio.basica.Produto;
 import br.edu.ufape.poo.UfapeMarket.comunicacao.dto.response.ProdutoDTOResponse;
 
 @Component
-
 public class ProdutoConversor {
 
-	public Produto paraEntidade(ProdutoDTORequest dto) {
-
+    public Produto paraEntidade(ProdutoDTORequest dto) {
         Produto produto = new Produto();
 
         produto.setNome(dto.nome());
@@ -24,28 +22,33 @@ public class ProdutoConversor {
 
         return produto;
     }
-	
-	public ProdutoDTOResponse paraResponse(Produto produto) {
+    
+    public ProdutoDTOResponse paraResponse(Produto produto) {
 
-	    Long idCategoria = produto.getCategoria() != null
-	            ? produto.getCategoria().getId()
-	            : null;
+        Long idCategoria = produto.getCategoria() != null
+                ? produto.getCategoria().getId()
+                : null;
 
-	    Long idVendedor = produto.getVendedor() != null
-	            ? produto.getVendedor().getId()
-	            : null;
+        Long idVendedor = produto.getVendedor() != null
+                ? produto.getVendedor().getId()
+                : null;
 
-	    return new ProdutoDTOResponse(
-	            produto.getId(),
-	            produto.getNome(),
-	            produto.getDescricaoProduto(),
-	            produto.getFotoProduto(),
-	            produto.getPreco(),
-	            produto.getDisponivelParaVenda(),
-	            produto.getQuantidadeDisponivel(),
-	            produto.getTurnoDisponibilidade(),
-	            produto.getFormasPagamento(),
-	            idCategoria,
-	            idVendedor);
-	}
+        boolean estaDisponivel = produto.getDisponivelParaVenda() != null 
+                ? produto.getDisponivelParaVenda() 
+                : true;
+
+        return new ProdutoDTOResponse(
+                produto.getId(),
+                produto.getNome(),
+                produto.getDescricaoProduto(),
+                produto.getFotoProduto(),
+                produto.getPreco(),
+                estaDisponivel,
+                produto.getQuantidadeDisponivel(),
+                produto.getTurnoDisponibilidade(),
+                produto.getFormasPagamento(),
+                idCategoria,
+                idVendedor
+        );
+    }
 }

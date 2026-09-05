@@ -21,7 +21,6 @@ public class Produto {
     private String fotoProduto;
     private double preco;
     
-    // Nome corrigido para corresponder exatamente ao JSON enviado pelo Frontend
     private Boolean disponivelParaVenda = true;
     
     private int quantidadeDisponivel;
